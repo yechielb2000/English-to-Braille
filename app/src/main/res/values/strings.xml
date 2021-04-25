@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">English to Braille</string>
+    <string name="name_the_file">Name the file</string>
 </resources>

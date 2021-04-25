@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     enter_text_layout.setVisibility(View.VISIBLE);
                     last_ward_layout.setVisibility(View.VISIBLE);
                     scrollView.setVisibility(View.VISIBLE);
-                    if(Pdf.createMyPDF(pdfName.getText().toString()))
+                    if(Pdf.createMyPDF(pdfName.getText().toString().replace("/", "")))
                         startPdfActivity(true);
                 }
             }
