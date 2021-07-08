@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">English to Braille</string>
     <string name="name_the_file">Name the file</string>
+    <string name="enter_text">ENTER TEXT</string>
+    <string name="translate">translate</string>
+    <string name="clear_text">clear text</string>
+    <string name="ok">ok</string>
+    <string name="make_pdf">Make PDF</string>
+    <string name="all_pdf">all pdf</string>
 </resources>

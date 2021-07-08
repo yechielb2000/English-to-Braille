@@ -28,7 +28,7 @@
             android:textSize="40sp"
             android:textColor="@color/colorAccent"
             android:textStyle="bold"
-            android:text="ENTER TEXT"/>
+            android:text="@string/enter_text"/>
 
        <LinearLayout
            android:layout_width="match_parent"
@@ -41,7 +41,9 @@
                android:layout_width="0dp"
                android:layout_height="wrap_content"
                android:inputType="textPersonName"
-               android:ems="10"/>
+               android:ems="10"
+               android:backgroundTint="@color/colorAccent"
+               android:autofillHints="" />
 
            <Button
                android:id="@+id/camera_button"
@@ -74,37 +76,41 @@
             android:id="@+id/all_pdf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="all pdf"
+            android:text="@string/all_pdf"
             android:background="@drawable/buttons"
-            android:layout_marginRight="8dp"
-            android:onClick="onClick"/>
+            android:layout_marginEnd="8dp"
+            android:onClick="onClick"
+            tools:ignore="ButtonStyle" />
 
 
         <Button
             android:id="@+id/make_pdf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Make PDF"
+            android:text="@string/make_pdf"
             android:background="@drawable/buttons"
-            android:layout_marginRight="8dp"
-            android:onClick="onClick"/>
+            android:layout_marginEnd="8dp"
+            android:onClick="onClick"
+            tools:ignore="ButtonStyle" />
 
         <Button
             android:id="@+id/clear_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="clear text"
-            android:layout_marginRight="8dp"
+            android:text="@string/clear_text"
+            android:layout_marginEnd="8dp"
             android:background="@drawable/buttons"
-            android:onClick="onClick"/>
+            android:onClick="onClick"
+            tools:ignore="ButtonStyle" />
 
         <Button
             android:id="@+id/button_get_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="translate"
+            android:text="@string/translate"
             android:background="@drawable/buttons"
-            android:onClick="onClick"/>
+            android:onClick="onClick"
+            tools:ignore="ButtonStyle" />
 
     </LinearLayout>
 
@@ -149,7 +155,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textAllCaps="true"
-                android:text="ok"
+                android:text="@string/ok"
                 android:background="@color/colorAccent"
                 android:onClick="nameItButton"
                 android:layout_margin="10dp"
