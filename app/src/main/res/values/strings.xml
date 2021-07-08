@@ -7,4 +7,5 @@
     <string name="ok">ok</string>
     <string name="make_pdf">Make PDF</string>
     <string name="all_pdf">all pdf</string>
+    <string name="pdf_files_here">PDF FILES HERE</string>
 </resources>

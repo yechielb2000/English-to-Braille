@@ -53,12 +53,6 @@
                android:background="@drawable/ic_sharp_photo_camera_24"
                android:onClick="onClick"/>
 
-           <ImageView
-               android:id="@+id/image"
-               android:layout_width="0dp"
-               android:layout_height="0dp"
-               android:src="@drawable/extract_text"/>
-
        </LinearLayout>
 
     </LinearLayout>

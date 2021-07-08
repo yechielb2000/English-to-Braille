@@ -12,11 +12,9 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.provider.MediaStore;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.Button;
@@ -31,6 +29,7 @@ import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 
+@SuppressLint("StaticFieldLeak")
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     public SharedPreferences sharedPreferences;
@@ -43,13 +42,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static String text, finalText;
     ScrollView scrollView;
     LinearLayout buttons_layout, name_layout, enter_text_layout, last_ward_layout;
-    @SuppressLint("StaticFieldLeak")
     static LinearLayout main_layout;
     TextView textView, tellWord, lastWord;
-    @SuppressLint("StaticFieldLeak")
     static EditText editText, pdfName;
     Button name_it;
-    ImageView imageView;
     Translate translate;
 
     private static final int CAMERA_REQUEST = 1888;
@@ -76,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
          lastWord = findViewById(R.id.last_word);
          tellWord = findViewById(R.id.tell_word);
          pdfName = findViewById(R.id.pdfName);
-         imageView = findViewById(R.id.image);
 
         soundPool = new SoundPool.Builder().setMaxStreams(10).build();
         id = soundPool.load(this, R.raw.click, 1);
@@ -199,24 +194,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-           //todo --> setImage and call getTextFromImage() to extract the text
-            imageView.setImageBitmap(photo);
-            getTextFromImage();
-            imageView.setImageBitmap(photo);
-            getTextFromImage();
+            getTextFromImage((Bitmap) data.getExtras().get("data"));
         }
     }
 
-    public void getTextFromImage() {
-
-        Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.extract_text);
+    public void getTextFromImage(Bitmap photo) {
 
         TextRecognizer textRecognizer = new TextRecognizer.Builder(getApplicationContext()).build();
         if (!textRecognizer.isOperational()){
             Toast.makeText(getApplicationContext(), "Could not get the Text", Toast.LENGTH_SHORT).show();
         }else{
-            Frame frame = new Frame.Builder (). setBitmap (bitmap).build ();
+            Frame frame = new Frame.Builder().setBitmap(photo).build ();
             SparseArray<TextBlock> items = textRecognizer.detect (frame) ;
 
             StringBuilder stringBuilder = new StringBuilder ();
@@ -232,14 +220,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void startPdfActivity(boolean addNew){
 
         Intent i = new Intent(MainActivity.this, PdfList.class);
-        if (addNew)
-            i.putExtra("FILE_NAME", pdfName.getText().toString());
+        if (addNew) i.putExtra("FILE_NAME", pdfName.getText().toString());
         startActivity(i);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
     private void CreateLastWord(){
-
         if(text.length() > 1) {
             lastWord.setVisibility(View.VISIBLE);
             tellWord.setVisibility(View.VISIBLE);

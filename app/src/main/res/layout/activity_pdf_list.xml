@@ -11,12 +11,11 @@
         android:layout_margin="20sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="PDF FILES HERE"
+        android:text="@string/pdf_files_here"
         android:textSize="40sp"
         android:textStyle="bold"
         android:textColor="@color/colorAccent"
         android:gravity="center"/>
-
 
    <ScrollView
        android:background="@drawable/border"
@@ -32,9 +31,8 @@
            android:orientation="vertical"
            android:layout_margin="10dp">
 
-
-
        </LinearLayout>
 
    </ScrollView>
+
 </LinearLayout>
