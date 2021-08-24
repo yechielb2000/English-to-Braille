@@ -1,7 +1,6 @@
 package com.example.test1244;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,25 +14,20 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.io.File;
+import static com.example.test1244.Pdf.folder_name;
+
 public class PdfList extends AppCompatActivity {
 
-
-    private static final boolean requestComplished = false;
     @SuppressLint("StaticFieldLeak")
     static LinearLayout pdf_list_layout;
-    float x1, x2, y1, y2;
-    private static final int counterOfPdfs = 0;
 
-    @SuppressLint("UseCompatLoadingForDrawables")
-    @Override
+    @Override  @SuppressLint("UseCompatLoadingForDrawables")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pdf_list);
 
         pdf_list_layout = findViewById(R.id.pdf_list_layout);
-
         requestFromFolder();
     }
 
@@ -67,7 +61,7 @@ public class PdfList extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                File file = new File(Environment.getExternalStoragePublicDirectory("English to Braille")+"/"+((TextView)v).getText().toString().split("\n")[0]);
+                File file = new File(Environment.getExternalStoragePublicDirectory(folder_name)+"/"+((TextView)v).getText().toString().split("\n")[0]);
 
                 Uri uri = Uri.fromFile(file);
                 intent.setDataAndType(uri, "application/pdf");
@@ -83,11 +77,10 @@ public class PdfList extends AppCompatActivity {
             @Override
             public boolean onLongClick(View v) {
 
-                File file = new File(Environment.getExternalStoragePublicDirectory("English to Braille")+"/"+((TextView)v).getText().toString().split("\n")[0]);
-
+                File file = new File(Environment.getExternalStoragePublicDirectory(folder_name)+"/"+((TextView)v).getText().toString().split("\n")[0]);
 
                 file.delete();
-                Toast.makeText(MainActivity.main_layout.getContext(), file.getName() + " has been deleted.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.main_layout.getContext(), file.getName() + "has been deleted.", Toast.LENGTH_SHORT).show();
                 Intent intent = getIntent();
                 finish();
                 startActivity(intent);

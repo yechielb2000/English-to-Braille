@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +14,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.SoundPool;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.SparseArray;
@@ -33,8 +36,7 @@ import com.google.android.gms.vision.text.TextRecognizer;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     public SharedPreferences sharedPreferences;
-    private final String RELOAD_TRANSLATE = "reload_translate";
-    private final String RELOAD_EDIT_TEXT = "reload_edit_text";
+    private final String RELOAD_TRANSLATE = "reload_translate", RELOAD_EDIT_TEXT = "reload_edit_text";
 
     public SoundPool soundPool;
     public static int id;
@@ -99,7 +101,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
 
         switch (view.getId()) {
-
             case R.id.button_get_text:
                 soundPool.play(id, 1, 1, 0, 0, 1);
                 if (editText.getText().toString().length() > 250){
@@ -164,13 +165,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (pdfName.length() <= 0) {
                     Toast.makeText(MainActivity.this, "You must name the file, Please try again", Toast.LENGTH_LONG).show();
                 } else {
-                    name_layout.setVisibility(View.GONE);
-                    buttons_layout.setVisibility(View.VISIBLE);
-                    enter_text_layout.setVisibility(View.VISIBLE);
-                    last_ward_layout.setVisibility(View.VISIBLE);
-                    scrollView.setVisibility(View.VISIBLE);
-                    if(Pdf.createMyPDF(pdfName.getText().toString().replace("/", "")))
-                        startPdfActivity(true);
+                        name_layout.setVisibility(View.GONE);
+                        buttons_layout.setVisibility(View.VISIBLE);
+                        enter_text_layout.setVisibility(View.VISIBLE);
+                        last_ward_layout.setVisibility(View.VISIBLE);
+                        scrollView.setVisibility(View.VISIBLE);
+
+                        if (Pdf.createMyPDF(pdfName.getText().toString(), getApplicationContext()))
+                            startPdfActivity(true);
                 }
             }
         });

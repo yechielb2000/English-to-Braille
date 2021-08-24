@@ -1,7 +1,10 @@
 package com.example.test1244;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.graphics.Paint;
 import android.graphics.pdf.PdfDocument;
+import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
@@ -10,9 +13,10 @@ import java.io.FileOutputStream;
 
 public class Pdf extends PdfDocument{
 
+    public static final String folder_name = "English to Braille";
      static double file_size;
 
-    public static boolean createMyPDF(String name){
+    public static boolean createMyPDF(String name, Context context){
 
         PdfDocument myPdfDocument = new PdfDocument();
         PdfDocument.PageInfo myPageInfo = new PdfDocument.PageInfo.Builder(300,600,1).create();
@@ -30,8 +34,9 @@ public class Pdf extends PdfDocument{
 
         myPdfDocument.finishPage(myPage);
 
-        File path = Environment.getExternalStoragePublicDirectory("English to Braille");
-        File file = new File(Environment.getExternalStoragePublicDirectory("English to Braille")+"/"+ name +".pdf");
+        File path = filePath(context);
+        Toast.makeText(context, path.toString(), Toast.LENGTH_SHORT).show();
+        File file = new File(Environment.getExternalStoragePublicDirectory(folder_name)+"/"+ name +".pdf");
 
        if(file.exists()){
            Toast.makeText( MainActivity.main_layout.getContext(), "File name already exists", Toast.LENGTH_LONG).show();
@@ -50,6 +55,18 @@ public class Pdf extends PdfDocument{
            myPdfDocument.close();
            return true;
        }
+    }
+
+    private static File filePath(Context context){
+        File path;
+
+        if(Integer.parseInt(Build.VERSION.RELEASE) <= 10){
+            path = Environment.getExternalStoragePublicDirectory(folder_name);
+        }else{
+            ContextWrapper contextWrapper = new ContextWrapper(context);
+            path = contextWrapper.getExternalFilesDir(folder_name);
+        }
+        return path;
     }
 
     private static String setupTextLines() {
