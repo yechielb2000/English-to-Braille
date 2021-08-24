@@ -15,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.io.File;
+
+import static com.example.test1244.Pdf.filePath;
 import static com.example.test1244.Pdf.folder_name;
 
 public class PdfList extends AppCompatActivity {
@@ -35,13 +37,8 @@ public class PdfList extends AppCompatActivity {
     public void addViewToLayout(String pdfName){
 
         TextView textView = new TextView(pdf_list_layout.getContext());
-        String type = "";
-        if (Pdf.file_size < 1000)
-            type = "KB";
-        else if(Pdf.file_size < 1000000)
-            type = "MB";
-        else
-            type = "GB";
+        String type = getFileSize();
+
         String text = pdfName + "\n" + Pdf.file_size  + type;
 
         SpannableString ss1 = new SpannableString(text);
@@ -61,7 +58,8 @@ public class PdfList extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                File file = new File(Environment.getExternalStoragePublicDirectory(folder_name)+"/"+((TextView)v).getText().toString().split("\n")[0]);
+//                Environment.getExternalStoragePublicDirectory(folder_name)
+                File file = new File(filePath(getApplicationContext())+"/"+((TextView)v).getText().toString().split("\n")[0]);
 
                 Uri uri = Uri.fromFile(file);
                 intent.setDataAndType(uri, "application/pdf");
@@ -76,8 +74,8 @@ public class PdfList extends AppCompatActivity {
 
             @Override
             public boolean onLongClick(View v) {
-
-                File file = new File(Environment.getExternalStoragePublicDirectory(folder_name)+"/"+((TextView)v).getText().toString().split("\n")[0]);
+//                Environment.getExternalStoragePublicDirectory(folder_name)
+                File file = new File(filePath(getApplicationContext())+"/"+((TextView)v).getText().toString().split("\n")[0]);
 
                 file.delete();
                 Toast.makeText(MainActivity.main_layout.getContext(), file.getName() + "has been deleted.", Toast.LENGTH_SHORT).show();
@@ -91,7 +89,20 @@ public class PdfList extends AppCompatActivity {
         pdf_list_layout.addView(textView);
     }
 
-   private void requestFromFolder(){
+    private String getFileSize() {
+
+        String type;
+        if (Pdf.file_size < 1000)
+            type = "KB";
+        else if(Pdf.file_size < 1000000)
+            type = "MB";
+        else
+            type = "GB";
+
+        return type;
+    }
+
+    private void requestFromFolder(){
 
         File folder_path = Environment.getExternalStoragePublicDirectory("English to Braille");
         File[] files = folder_path.listFiles();

@@ -7,6 +7,7 @@ import android.graphics.pdf.PdfDocument;
 import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -35,8 +36,7 @@ public class Pdf extends PdfDocument{
         myPdfDocument.finishPage(myPage);
 
         File path = filePath(context);
-        Toast.makeText(context, path.toString(), Toast.LENGTH_SHORT).show();
-        File file = new File(Environment.getExternalStoragePublicDirectory(folder_name)+"/"+ name +".pdf");
+        File file = new File(filePath(context)+"/"+ name +".pdf");
 
        if(file.exists()){
            Toast.makeText( MainActivity.main_layout.getContext(), "File name already exists", Toast.LENGTH_LONG).show();
@@ -57,7 +57,7 @@ public class Pdf extends PdfDocument{
        }
     }
 
-    private static File filePath(Context context){
+    public static File filePath(Context context){
         File path;
 
         if(Integer.parseInt(Build.VERSION.RELEASE) <= 10){
