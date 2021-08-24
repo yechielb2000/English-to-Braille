@@ -7,7 +7,6 @@ import android.graphics.pdf.PdfDocument;
 import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -60,7 +59,9 @@ public class Pdf extends PdfDocument{
     public static File filePath(Context context){
         File path;
 
-        if(Integer.parseInt(Build.VERSION.RELEASE) <= 10){
+        String version = Build.VERSION.RELEASE.split("\\.")[0];
+
+        if(Integer.parseInt(version) <= 10){
             path = Environment.getExternalStoragePublicDirectory(folder_name);
         }else{
             ContextWrapper contextWrapper = new ContextWrapper(context);
