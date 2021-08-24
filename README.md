@@ -1,2 +1,4 @@
 # English-to-Braille
-Translate English to Braille and generate a pdf with the translate in it 
+ 
+Translate English to Braille from text or an image 
+you can also download it as a PDF file!!
