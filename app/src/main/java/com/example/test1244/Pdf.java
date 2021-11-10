@@ -1,7 +1,6 @@
 package com.example.test1244;
 
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.graphics.Paint;
 import android.graphics.pdf.PdfDocument;
 import android.os.Build;
@@ -13,10 +12,10 @@ import java.io.FileOutputStream;
 
 public class Pdf extends PdfDocument{
 
-    public static final String folder_name = "English to Braille";
-     static double file_size;
+    public final String folder_name = "English to Braille";
+    static double file_size;
 
-    public static boolean createMyPDF(String name, Context context){
+    public boolean createMyPDF(String name, String text, String finalText, Context context){
 
         PdfDocument myPdfDocument = new PdfDocument();
         PdfDocument.PageInfo myPageInfo = new PdfDocument.PageInfo.Builder(300,600,1).create();
@@ -24,7 +23,7 @@ public class Pdf extends PdfDocument{
 
         Paint myPaint = new Paint();
 
-        String pdfText = setupTextLines();
+        String pdfText = setupTextLines(text, finalText);
         int x = 10, y=25;
 
         for (String line : pdfText.split("\n")){
@@ -34,11 +33,11 @@ public class Pdf extends PdfDocument{
 
         myPdfDocument.finishPage(myPage);
 
-        File path = filePath(context);
-        File file = new File(filePath(context)+"/"+ name +".pdf");
+        File path = filePath();
+        File file = new File(path +"/"+ name +".pdf");
 
        if(file.exists()){
-           Toast.makeText( MainActivity.main_layout.getContext(), "File name already exists", Toast.LENGTH_LONG).show();
+           Toast.makeText( context, "File name already exists", Toast.LENGTH_LONG).show();
            return false;
         }else {
            File myFile = new File(path,name + ".pdf");
@@ -48,7 +47,7 @@ public class Pdf extends PdfDocument{
                file_size = myFile.length()/1000.0;
            } catch (Exception e) {
                e.printStackTrace();
-               Toast.makeText(MainActivity.main_layout.getContext(), "ERROR : " + e.getMessage(), Toast.LENGTH_LONG).show();
+               Toast.makeText(context, "ERROR : " + e.getMessage(), Toast.LENGTH_LONG).show();
                Log.e("TAG", "Exception", e);
            }
            myPdfDocument.close();
@@ -56,25 +55,29 @@ public class Pdf extends PdfDocument{
        }
     }
 
-    public static File filePath(Context context){
+    public File filePath(){
         File path;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/" + folder_name);
+        }
+        else {
+            path = new File(Environment.getExternalStorageDirectory() + "/" + folder_name);
 
-        String version = Build.VERSION.RELEASE.split("\\.")[0];
-
-        if(Integer.parseInt(version) <= 10){
-            path = Environment.getExternalStoragePublicDirectory(folder_name);
-        }else{
-            ContextWrapper contextWrapper = new ContextWrapper(context);
-            path = contextWrapper.getExternalFilesDir(folder_name);
+            if (!path.exists()) {
+                boolean success = path.mkdirs();
+                if (!success) {
+                    path = null;
+                }
+            }
         }
         return path;
     }
 
-    private static String setupTextLines() {
+    private String setupTextLines(String text, String finalText) {
 
         String newLine = "\n";
         StringBuilder newString = new StringBuilder(newLine + "The translate of :" + newLine);
-        String text = MainActivity.text + newLine + newLine +"is :" + newLine + MainActivity.finalText;
+        text = text + newLine + newLine +"is :" + newLine + finalText;
 
         int WidthPage = 35, textLength = text.length();
 

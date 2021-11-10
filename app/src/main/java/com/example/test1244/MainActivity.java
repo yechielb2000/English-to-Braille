@@ -6,28 +6,22 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.SoundPool;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
@@ -35,23 +29,23 @@ import com.google.android.gms.vision.text.TextRecognizer;
 @SuppressLint("StaticFieldLeak")
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferences;
     private final String RELOAD_TRANSLATE = "reload_translate", RELOAD_EDIT_TEXT = "reload_edit_text";
 
     public SoundPool soundPool;
-    public static int id;
+    public int id;
 
-    public static String text, finalText;
-    ScrollView scrollView;
-    LinearLayout buttons_layout, name_layout, enter_text_layout, last_ward_layout;
-    static LinearLayout main_layout;
-    TextView textView, tellWord, lastWord;
-    static EditText editText, pdfName;
-    Button name_it;
-    Translate translate;
+    private String text, finalText;
+    private ScrollView scrollView;
+    private LinearLayout buttons_layout, name_layout, enter_text_layout, last_ward_layout, main_layout;
+    private TextView textView, tellWord, lastWord;
+    private EditText editText, pdfName;
+    private Button name_it;
 
-    private static final int CAMERA_REQUEST = 1888;
-    private static final int MY_CAMERA_PERMISSION_CODE = 100;
+    private final int CAMERA_REQUEST = 1888;
+    private final int MY_CAMERA_PERMISSION_CODE = 100;
+
+    private final Pdf pdf = new Pdf();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,8 +102,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     editText.setText("");
                 }else {
                     text = editText.getText().toString().toLowerCase() + " ";
-                    translate = new Translate(text);
-                    finalText = translate.translateText();
+                    finalText = new Translator(this, text).translate();
                     editText.setText("");
                     textView.setText(finalText);
                     CreateLastWord();
@@ -171,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         last_ward_layout.setVisibility(View.VISIBLE);
                         scrollView.setVisibility(View.VISIBLE);
 
-                        if (Pdf.createMyPDF(pdfName.getText().toString().replace("/", ""), getApplicationContext()))
+                        if (pdf.createMyPDF(pdfName.getText().toString().replace("/", ""), text, finalText, getApplicationContext()));
                             startPdfActivity(true);
                 }
             }
